@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Photos
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate , PhotoSelectedDelegate {
     let photoPicker = UIImagePickerController()
     let cameraPicker = UIImagePickerController()
     var imageViewSize : CGSize!
@@ -16,9 +17,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     let alertPopUp = UIAlertController(title: "Alert!", message: "stop", preferredStyle: UIAlertControllerStyle.Alert)
     //let actionController = UIAlertController(title: "Title", message: "message", preferredStyle: UIAlertControllerStyle.ActionSheet)
 
+    var cameraWorks = true
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.imageViewSize = self.imageView.frame.size
+
         imageView.layer.borderWidth = 4
         imageView.layer.borderColor = UIColor.greenColor().CGColor
         //set to photo library:
@@ -29,6 +33,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
         else {
             //point out that camera is not enabled.
+            var cameraWorks = false
             var alert: UIAlertView = UIAlertView()
             alert.title = "No camera."
             alert.message = "This device does not have a camera."
@@ -48,7 +53,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             alert.show()
         }
         else {
-            println("Not their first time here.")
+            println("Not the first time here.")
         }
     }
 
@@ -56,6 +61,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+        if segue.identifier == "ShowGrid" {
+            
+            let gridVC = segue.destinationViewController as GridViewController
+            //fetching all assets without any options - gives us all the users photos
+            gridVC.assetsFetchResult = PHAsset.fetchAssetsWithOptions(nil)
+            gridVC.delegate = self
+        }
+    }
+
     //why use lazy?
     lazy var actionController : UIAlertController = {
         var actionController = UIAlertController(title: "Select", message: "Do you want to use camera or photo library?", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -73,15 +89,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }()
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!) {
-        let editedImage = info[UIImagePickerControllerEditedImage] as UIImage
-        self.imageView.image = editedImage
-        self.dismissViewControllerAnimated(true, completion: nil)
-        editedImage.CIImage
+        self.dismissViewControllerAnimated(true) {
+
+            let editedImage = info[UIImagePickerControllerEditedImage] as UIImage
+            self.imageView.image = editedImage
+        }
     }
     
     @IBAction func handlePhotoButtonPressed(sender: AnyObject) {
-        self.presentViewController(self.actionController, animated: true, completion: nil)
+        if cameraWorks {
+            //self.presentViewController(self.cameraPicker, animated: true, completion: nil)
+        }
+        else {
+            //self.presentViewController(self.actionController, animated: true, completion: nil)
+        }
+
     }
+
     @IBAction func photoTapped(sender: AnyObject) {
         self.presentViewController(self.cameraPicker, animated: true, completion: nil)
     }
@@ -90,6 +114,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     func imagePickerControllerDidCancel(picker: UIImagePickerController!) {
         println("user canceled")
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func photoSelected(asset : PHAsset) -> Void {
+        println("final step")
+        
+        var targetSize = CGSize(width: CGRectGetWidth(self.imageView.frame), height: CGRectGetHeight(self.imageView.frame))
+        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: targetSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (image, info) -> Void in
+            
+            self.imageView.image = image
+        }
     }
 
 }
