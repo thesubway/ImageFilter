@@ -22,6 +22,7 @@ class GridViewController: UIViewController, UICollectionViewDataSource, PhotoSel
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        collectionView.layer.backgroundColor = UIColor.grayColor().CGColor
         self.collectionView.dataSource = self
         //create a PHCachingImageManager
         self.imageManager = PHCachingImageManager()

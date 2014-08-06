@@ -67,10 +67,29 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             
             let gridVC = segue.destinationViewController as GridViewController
             //fetching all assets without any options - gives us all the users photos
+            
             gridVC.assetsFetchResult = PHAsset.fetchAssetsWithOptions(nil)
             gridVC.delegate = self
         }
+        //self.checkAuthentication()
     }
+func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> Void {
+    switch PHPhotoLibrary.authorizationStatus() {
+    case .NotDetermined:
+        println("Not Determined")
+    PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) -> Void in
+        completionHandler(status)
+    })
+    //something else restricts them
+    default:
+        println("Restricted")
+//    case .Denied:
+//        println("Denied")
+//    case .Authorized:
+//        println("Authorized")
+//        isAuthorized = true
+    }
+}
 
     //why use lazy?
     lazy var actionController : UIAlertController = {
