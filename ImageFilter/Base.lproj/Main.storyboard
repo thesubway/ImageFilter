@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fMZ-tV-jgi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fMZ-tV-jgi">
                                 <rect key="frame" x="81" y="60" width="439" height="404"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwK-fK-nAT">
@@ -30,7 +30,7 @@
                                     <segue destination="fdj-oM-Q71" kind="show" identifier="ShowGrid" id="p9x-pG-qth"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbz-gR-w35">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jbz-gR-w35">
                                 <rect key="frame" x="97" y="60" width="407" height="302"/>
                                 <state key="normal">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,11 +39,26 @@
                                     <action selector="photoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZyH-Dk-sKz"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Dp-EP-UL9">
+                                <rect key="frame" x="281" y="536" width="92" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="92" id="OfL-2G-EEx"/>
+                                    <constraint firstAttribute="height" constant="30" id="lEk-wl-nbz"/>
+                                </constraints>
+                                <state key="normal" title="Filter">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="filterPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ubT-3L-82I"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4Dp-EP-UL9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="265" id="01Y-pU-W90"/>
                             <constraint firstItem="jbz-gR-w35" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="40" id="08o-Eb-t2v"/>
                             <constraint firstItem="gwK-fK-nAT" firstAttribute="top" secondItem="jbz-gR-w35" secondAttribute="bottom" constant="136" id="9UY-Jk-qxh"/>
+                            <constraint firstItem="4Dp-EP-UL9" firstAttribute="top" secondItem="gwK-fK-nAT" secondAttribute="bottom" constant="8" id="B38-IX-mik"/>
                             <constraint firstItem="jbz-gR-w35" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="81" id="Bq5-f6-YyX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="jbz-gR-w35" secondAttribute="trailing" constant="80" id="HRv-Pc-gQ8"/>
                             <constraint firstAttribute="trailing" secondItem="fMZ-tV-jgi" secondAttribute="trailing" constant="80" id="LTX-X1-mOz"/>
@@ -54,13 +69,15 @@
                             <constraint firstItem="gwK-fK-nAT" firstAttribute="top" secondItem="fMZ-tV-jgi" secondAttribute="bottom" constant="34" id="oWn-3W-AkT"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="ccZ-Vk-Fkf"/>
                     <connections>
+                        <outlet property="filterButton" destination="4Dp-EP-UL9" id="2jz-gi-Jg1"/>
                         <outlet property="imageView" destination="fMZ-tV-jgi" id="l7J-iq-KNM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-292" y="136"/>
+            <point key="canvasLocation" x="520" y="136"/>
         </scene>
         <!--Grid View Controller-->
         <scene sceneID="UcA-uw-dox">
@@ -118,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wns-B5-Jbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="371" y="136"/>
+            <point key="canvasLocation" x="1183" y="136"/>
         </scene>
         <!--Photo View Controller-->
         <scene sceneID="ZP3-HY-NCi">
@@ -153,7 +170,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bD6-19-4qz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1029" y="136"/>
+            <point key="canvasLocation" x="1841" y="136"/>
         </scene>
     </scenes>
 </document>
