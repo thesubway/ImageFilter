@@ -22,16 +22,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     var selectedAsset : PHAsset?
     let adjustmentFormatterIndentifier = "com.imagefilter.dan"
     var context = CIContext(options: nil)
-
+    
     var cameraWorks = true
+    var cellImage : UIImage!
+    var currentFilters = ["CISepiaTone","CIColorInvert","CIVignette","CIColorMonochrome","CISepiaTone"]
+    var cellImages = [UIImage]()
+    
     @IBOutlet weak var filterButton: UIButton!
     @IBOutlet weak var imageView: UIImageView!
-
+    @IBOutlet var gestureRecognizer: UITapGestureRecognizer!
+    
     var filterName = ""
+    @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.imageView.addGestureRecognizer(gestureRecognizer)
         //self.imageViewSize = self.imageView.frame.size
-
+        collectionView.layer.backgroundColor = UIColor.grayColor().CGColor
         imageView.layer.borderWidth = 4
         imageView.layer.borderColor = UIColor.greenColor().CGColor
         //set to photo library:
@@ -62,8 +69,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             alert.show()
         }
         else {
-            println("Not the first time here.")
+            println("You've launched this before.")
         }
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.collectionView?.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -120,26 +132,18 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
         var actionControllerFilter = UIAlertController(title: "Select", message: "What kind of filter do you want to use?", preferredStyle: UIAlertControllerStyle.ActionSheet)
         //some actions to the controller.
         let sepiaAction = UIAlertAction(title: "Sepia", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
-            //do the sepia
-                println("time to do sepia")
                 self.filterName = "CISepiaTone"
                 self.doFilter()
             })
-        let colorInvertAction = UIAlertAction(title: "SixfoldRefl", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
-            //do the sepia
-                println("time to do sepia")
+        let colorInvertAction = UIAlertAction(title: "ColorInvert", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
                 self.filterName = "CIColorInvert"
                 self.doFilter()
             })
         let vignetteAction = UIAlertAction(title: "vignette", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
-            //do the sepia
-                println("time to do sepia")
                 self.filterName = "CIVignette"
                 self.doFilter()
             })
         let colorMonochromeAction = UIAlertAction(title: "monochrome", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
-            //do the sepia
-                println("time to do sepia")
                 self.filterName = "CIColorMonochrome"
                 self.doFilter()
             })
@@ -152,9 +156,9 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!) {
         self.dismissViewControllerAnimated(true) {
-
-            let editedImage = info[UIImagePickerControllerEditedImage] as UIImage
-            self.imageView.image = editedImage
+            if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+                self.imageView.image = editedImage
+            }
         }
     }
 
@@ -169,10 +173,13 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
 
     }
     
+    
+    @IBAction func photoPressed(sender: AnyObject) {
+        self.presentViewController(self.cameraPicker, animated: true, completion: nil)
+    }
+    
     @IBAction func filterPressed(sender: AnyObject) {
-        println("about to present controller: ")
         if self.actionControllerFilter.popoverPresentationController {
-        println("did get in here")
 //if it exists, i give it the filterbutton's view.
         self.actionControllerFilter.popoverPresentationController.sourceView = filterButton
 }
@@ -182,9 +189,6 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
     
     }
     
-    @IBAction func photoTapped(sender: AnyObject) {
-        self.presentViewController(self.cameraPicker, animated: true, completion: nil)
-    }
     
     func doFilter() {
         //but that doesn't work now, so check for pop-over property.
@@ -204,11 +208,10 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
                 var inputImage = CIImage(contentsOfURL: url)
                 inputImage = inputImage.imageByApplyingOrientation(orientation)
                 
-                //creating the filter
-println("Doing Filter")
+                //creating/doing the filter
                 var curFilterName = self.filterName //"CISepiaTone"
+                //setting the name to current filter
                 var filter = CIFilter(name: curFilterName)
-                //filter = CIFilter(name: "CISepiaTone")
                 filter.setDefaults()
                 filter.setValue(inputImage, forKey: kCIInputImageKey)
                 var outputImage = filter.outputImage
@@ -221,8 +224,7 @@ println("Doing Filter")
                 //create our adjustmentdata
                 var adjustmentData = PHAdjustmentData(formatIdentifier: self.adjustmentFormatterIndentifier, formatVersion: "1.0", data: jpegData)
                 var contentEditingOutput = PHContentEditingOutput(contentEditingInput:contentEditingInput)
-                //CUTOFF to where it works:
-                println(contentEditingOutput.renderedContentURL)
+                //CUTOFF to where it works. renderedContentURL here.
                 jpegData.writeToURL(contentEditingOutput.renderedContentURL, atomically: true)
                 contentEditingOutput.adjustmentData = adjustmentData
                 
@@ -244,12 +246,10 @@ println("Doing Filter")
                 })
             })
         }
-        println("got to the not doing")
 }
 
     //ensures canceling does not freeze
     func imagePickerControllerDidCancel(picker: UIImagePickerController!) {
-        println("user canceled")
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 
@@ -257,10 +257,25 @@ println("Doing Filter")
     func updateImage() {
         
         var targetSize = self.imageView.frame.size
+        //by this point selected asset, image is selected.
         PHImageManager.defaultManager().requestImageForAsset(self.selectedAsset, targetSize: targetSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (result : UIImage!, info : [NSObject : AnyObject]!) -> Void in
             self.imageView.image = result
         }
-        
+
+        var thumbnailSize = CGSize(width: 84, height: 84)
+        PHImageManager.defaultManager().requestImageForAsset(self.selectedAsset, targetSize: thumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil) { (thumbImage, info) -> Void in
+            for filter in self.currentFilters {
+                let thumbFilter = CIFilter(name: filter)
+                let thumbFilterInput = CIImage(CGImage: thumbImage.CGImage)
+                thumbFilter.setValue(thumbFilterInput, forKey: kCIInputImageKey)
+                let ciOutput = thumbFilter.outputImage
+                let outputImage = UIImage(CIImage: ciOutput)
+                self.cellImages.append(outputImage)
+            }
+            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                self.collectionView.reloadData()
+            })
+        }
     }
     //when something is added to library
     func photoLibraryDidChange(changeInstance: PHChange!) {
@@ -281,6 +296,29 @@ println("Doing Filter")
                 }
             }
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView!, didSelectItemAtIndexPath indexPath: NSIndexPath!) {
+        self.filterName = self.currentFilters[indexPath.item]
+        self.doFilter()
+    }
+
+    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+        return currentFilters.count
+    }
+    
+    func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("mainFilterCell", forIndexPath: indexPath) as MainFilterCell
+        self.filterName = self.currentFilters[indexPath.item]
+        println(self.filterName)
+
+        if indexPath.item < self.cellImages.count {
+            cell.imageView.image = self.cellImages[indexPath.item]
+            cell.imageView.layer.borderColor = UIColor.yellowColor().CGColor
+            cell.imageView.layer.borderWidth = 1
+        }
+
+        return cell
     }
 
 }
