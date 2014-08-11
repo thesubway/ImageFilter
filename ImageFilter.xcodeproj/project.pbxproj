@@ -16,6 +16,8 @@
 		6DAC88AA19901C5F0020C361 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DAC88A819901C5F0020C361 /* Main.storyboard */; };
 		6DAC88AC19901C5F0020C361 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DAC88AB19901C5F0020C361 /* Images.xcassets */; };
 		6DAC88B819901C5F0020C361 /* ImageFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DAC88B719901C5F0020C361 /* ImageFilterTests.swift */; };
+		6DDEF069199877850072620F /* AVFoundationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDEF068199877850072620F /* AVFoundationViewController.swift */; };
+		6DDEF06B1998812A0072620F /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDEF06A1998812A0072620F /* CustomImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		6DAC88B119901C5F0020C361 /* ImageFilterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFilterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DAC88B619901C5F0020C361 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DAC88B719901C5F0020C361 /* ImageFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFilterTests.swift; sourceTree = "<group>"; };
+		6DDEF068199877850072620F /* AVFoundationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVFoundationViewController.swift; sourceTree = "<group>"; };
+		6DDEF06A1998812A0072620F /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 				6D8F736A19917E5E009FA0D1 /* PhotoCell.swift */,
 				6D3D343B1993E81400595F80 /* MainFilterCell.swift */,
 				6DAC88A619901C5F0020C361 /* ViewController.swift */,
+				6DDEF068199877850072620F /* AVFoundationViewController.swift */,
 				6D8F736819917C86009FA0D1 /* GridViewController.swift */,
 				6D8F736619917579009FA0D1 /* PhotoViewController.swift */,
 				6DAC88A819901C5F0020C361 /* Main.storyboard */,
@@ -99,6 +104,7 @@
 		6DAC88A219901C5F0020C361 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6DDEF06A1998812A0072620F /* CustomImageView.swift */,
 				6DAC88A319901C5F0020C361 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -221,7 +227,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D8F736919917C86009FA0D1 /* GridViewController.swift in Sources */,
+				6DDEF06B1998812A0072620F /* CustomImageView.swift in Sources */,
 				6D8F736B19917E5E009FA0D1 /* PhotoCell.swift in Sources */,
+				6DDEF069199877850072620F /* AVFoundationViewController.swift in Sources */,
 				6DAC88A719901C5F0020C361 /* ViewController.swift in Sources */,
 				6DAC88A519901C5F0020C361 /* AppDelegate.swift in Sources */,
 				6D3D343C1993E81400595F80 /* MainFilterCell.swift in Sources */,

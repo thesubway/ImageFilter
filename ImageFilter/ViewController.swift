@@ -32,6 +32,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet var gestureRecognizer: UITapGestureRecognizer!
     
+    //in case AVFoundationView sets an image here:
+    var currentImage : UIImage!
+    
     var filterName = ""
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
@@ -71,6 +74,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         else {
             println("You've launched this before.")
         }
+        if let avfImage = currentImage {
+            self.imageView.image = avfImage
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -84,15 +90,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        if segue.identifier == "ShowGrid" {
-            
-            let gridVC = segue.destinationViewController as GridViewController
-            //fetching all assets without any options - gives us all the users photos
-            
-            gridVC.assetsFetchResult = PHAsset.fetchAssetsWithOptions(nil)
-            gridVC.delegate = self
-        }
-        //self.checkAuthentication()
+        
     }
 func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> Void {
     switch PHPhotoLibrary.authorizationStatus() {
@@ -123,8 +121,22 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
         let photoAction = UIAlertAction(title: "Library", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
             self.presentViewController(self.photoPicker, animated: true, completion: nil)
             })
+        let gridAction = UIAlertAction(title: "GridView", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
+            var gridVC = self.storyboard.instantiateViewControllerWithIdentifier("gridView") as GridViewController
+            gridVC.assetsFetchResult = PHAsset.fetchAssetsWithOptions(nil)
+            gridVC.delegate = self
+            self.navigationController.pushViewController(gridVC, animated: true)
+        })
+        let avfAction = UIAlertAction(title: "AVFoundation", style: UIAlertActionStyle.Default, handler: {(action: UIAlertAction!) -> Void in
+            let avfView = self.storyboard.instantiateViewControllerWithIdentifier("avfView") as AVFoundationViewController
+            
+            self.navigationController.pushViewController(avfView, animated: true)
+        })
+        
         actionController.addAction(cameraAction)
         actionController.addAction(photoAction)
+        actionController.addAction(avfAction)
+        actionController.addAction(gridAction)
         return actionController
     }()
 
@@ -170,7 +182,7 @@ func checkAuthentication(completionHandler: (PHAuthorizationStatus -> Void)) -> 
     }
     
     @IBAction func handlePhotoButtonPressed(sender: AnyObject) {
-
+        self.presentViewController(self.actionController, animated: true, completion: nil)
     }
     
     

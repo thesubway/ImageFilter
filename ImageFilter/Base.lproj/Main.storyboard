@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ImageFilter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="initialView" id="BYZ-38-t0r" customClass="ViewController" customModule="ImageFilter" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -67,7 +67,6 @@
                                 </state>
                                 <connections>
                                     <action selector="handlePhotoButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9dY-oB-7uq"/>
-                                    <segue destination="fdj-oM-Q71" kind="show" identifier="ShowGrid" id="p9x-pG-qth"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Dp-EP-UL9">
@@ -106,7 +105,7 @@
         <!--Grid View Controller-->
         <scene sceneID="UcA-uw-dox">
             <objects>
-                <viewController id="fdj-oM-Q71" customClass="GridViewController" customModule="ImageFilter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="gridView" id="fdj-oM-Q71" customClass="GridViewController" customModule="ImageFilter" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vfE-9n-Esn"/>
                         <viewControllerLayoutGuide type="bottom" id="iFp-Rh-zlw"/>
@@ -160,6 +159,56 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wns-B5-Jbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1183" y="136"/>
+        </scene>
+        <!--Foundation View Controller-->
+        <scene sceneID="ntf-CO-u10">
+            <objects>
+                <viewController storyboardIdentifier="avfView" id="boG-lw-gDg" customClass="AVFoundationViewController" customModule="ImageFilter" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7lY-1O-DrA"/>
+                        <viewControllerLayoutGuide type="bottom" id="cvh-nr-2Ib"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cJB-K8-AcD">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5yP-nL-viN">
+                                <rect key="frame" x="29" y="368" width="152" height="184"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="diY-FS-eO8">
+                                <rect key="frame" x="45" y="317" width="98" height="30"/>
+                                <state key="normal" title="Take Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="takePhotoPressed:" destination="boG-lw-gDg" eventType="touchUpInside" id="eg1-ug-uFb"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Lb-mK-j0c" customClass="CustomImageView" customModule="ImageFilter" customModuleProvider="target">
+                                <rect key="frame" x="29" y="124" width="240" height="128"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-tb-aq1">
+                                <rect key="frame" x="179" y="317" width="90" height="30"/>
+                                <state key="normal" title="Save Photo">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="savePhotoPressed:" destination="boG-lw-gDg" eventType="touchUpInside" id="0kV-BV-LEC"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="0Lb-mK-j0c" id="b9K-eS-NNR"/>
+                        <outlet property="innerView" destination="5yP-nL-viN" id="O8s-PI-1P9"/>
+                        <outlet property="saveButton" destination="j5F-tb-aq1" id="R5c-w2-uEf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M9z-OF-nvo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1183" y="834"/>
         </scene>
         <!--Photo View Controller-->
         <scene sceneID="ZP3-HY-NCi">
